@@ -316,41 +316,38 @@ gsap.registerPlugin(ScrollTrigger);
 const steps = [
   {
     title: "Business Audit",
-      description: "We dig into how your business actually runs day-to-day, not how the SOP doc says it runs. We find the bottlenecks, the duplicate work, and the spreadsheet with 47 tabs that one person refuses to let go of. Then we tell you exactly what's worth automating and what isn't.",
+    description:
+      "We dig into how your business actually runs day-to-day, not how the SOP doc says it runs...",
     icon: Audit,
   },
   {
     title: "Systems Buildout",
-      description: "Now we build the thing. CRM setup, data structure, workflows that actually fire when they should, using Airtable, ClickUp, custom databases, or whatever fits your stack. Less duct tape, fewer 'wait, did that actually send?' moments.",
+    description:
+      "Now we build the thing. CRM setup, data structure, workflows...",
     icon: Build,
   },
   {
     title: "AI & Automation",
-      description: "Now things start moving on their own. We connect your tools, automate the handoffs, and put AI agents on the work your team shouldn't be touching. Data entry, lead routing, follow-ups, customer replies. Less copy-pasting, fewer dropped balls, more time on work that actually needs a human.",
+    description:
+      "Now things start moving on their own. We connect your tools...",
     icon: Automate,
   },
   {
     title: "Training & Handover",
-      description: "We don't build and ghost. Your team gets proper training, docs they'll actually open, and a real human to message when something feels off. Because the fanciest automation is worthless if everyone's too nervous to use it.",
+    description:
+      "We don't build and ghost. Your team gets proper training...",
     icon: Final,
   },
-  // {
-  //   title: "Launch",
-  //   description:
-  //     "Final testing, optimization, and deployment to production.",
-  //   icon: "🚀",
-  // },
 ];
 
 export default function Timeline() {
-  const sectionsRef = useRef<HTMLDivElement[]>([]);
-  const contentRefs = useRef<HTMLDivElement[]>([]);
-  const iconRefs = useRef<HTMLDivElement[]>([]);
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [active, setActive] = useState(0);
 
   // ----------------------
-  // INIT
+  // INIT LENIS + SCROLLTRIGGER
   // ----------------------
   useEffect(() => {
     const lenis = new Lenis({
@@ -366,10 +363,9 @@ export default function Timeline() {
 
     lenis.on("scroll", ScrollTrigger.update);
 
-    // ----------------------
-    // ACTIVE DETECTION
-    // ----------------------
     sectionsRef.current.forEach((section, i) => {
+      if (!section) return;
+
       ScrollTrigger.create({
         trigger: section,
         start: "top center",
@@ -386,64 +382,18 @@ export default function Timeline() {
   }, []);
 
   // ----------------------
-  // CONTENT ANIMATION ON ACTIVE CHANGE
+  // CONTENT ANIMATION
   // ----------------------
-  // useEffect(() => {
-  //   const el = contentRefs.current[active];
-  //   if (!el) return;
-
-  //   gsap.fromTo(
-  //     el,
-  //     {
-  //       opacity: 0,
-  //       y: 20,
-  //       scale: 0.95,
-  //     },
-  //     {
-  //       opacity: 1,
-  //       y: 0,
-  //       scale: 1,
-  //       duration: 0.6,
-  //       ease: "power3.out",
-  //     }
-  //   );
-  // }, [active]);
-
-  // useEffect(() => {
-  //   const iconEl = contentRefs.current[active];
-  //   if (!iconEl) return;
-  
-  //   gsap.fromTo(
-  //     iconEl,
-  //     {
-  //       opacity: 0,
-  //       scale: 0.6,
-  //       y: 20,
-  //       rotate: -8,
-  //       filter: "blur(6px)",
-  //     },
-  //     {
-  //       opacity: 1,
-  //       scale: 1,
-  //       y: 0,
-  //       rotate: 0,
-  //       filter: "blur(0px)",
-  //       duration: 0.7,
-  //       ease: "power3.out",
-  //     }
-  //   );
-  // }, [active]);
-
   useEffect(() => {
     contentRefs.current.forEach((el, i) => {
       if (!el) return;
-  
+
       if (i === active) {
         gsap.fromTo(
           el,
           {
             opacity: 0,
-            scale: 0.5,
+            scale: 0.8,
             y: 30,
             filter: "blur(10px)",
           },
@@ -459,144 +409,57 @@ export default function Timeline() {
       } else {
         gsap.to(el, {
           opacity: 0,
-          scale: 1.2,
-          y: -20,
-          filter: "blur(12px)",
-          duration: 0.5,
+          scale: 1.05,
+          y: -10,
+          filter: "blur(10px)",
+          duration: 0.4,
           ease: "power2.out",
         });
       }
     });
   }, [active]);
 
-
-  // useEffect(() => {
-  //   const imgEl = iconRefs.current[active];
-  //   if (!imgEl) return;
-  
-  //   gsap.fromTo(
-  //     imgEl,
-  //     {
-  //       opacity: 0,
-  //       scale: 0.85,
-  //       y: 30,
-  //       filter: "blur(10px)",
-  //     },
-  //     {
-  //       opacity: 1,
-  //       scale: 1,
-  //       y: 0,
-  //       filter: "blur(0px)",
-  //       duration: 0.8,
-  //       ease: "power3.out",
-  //     }
-  //   );
-  // }, [active]);
-
-
-  useEffect(() => {
-    iconRefs.current.forEach((img, i) => {
-      if (!img) return;
-  
-      if (i === active) {
-        gsap.fromTo(
-          img,
-          {
-            opacity: 0,
-            scale: 0.8,
-            y: 40,
-            filter: "blur(12px)",
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.9,
-            ease: "power4.out",
-          }
-        );
-      } else {
-        gsap.to(img, {
-          opacity: 0,
-          scale: 1.1,
-          y: -20,
-          filter: "blur(12px)",
-          duration: 0.5,
-        });
-      }
-    });
-  }, [active]);
-
-
-  // useEffect(() => {
-  //   const el = contentRefs.current[active];
-  //   if (!el) return;
-  
-  //   gsap.to(el, {
-  //     rotate: 2,
-  //     y: -2,
-  //     duration: 0.6,
-  //     yoyo: true,
-  //     repeat: -1,
-  //     ease: "sine.inOut",
-  //   });
-  
-  //   return () => {
-  //     gsap.killTweensOf(el);
-  //   };
-  // }, [active]);
-
   return (
     <div className="grid grid-cols-12 items-start gap-10 px-10 py-20">
+      
+      {/* LEFT - STEP NUMBER */}
+      <div className="col-span-2 sticky top-0 h-screen flex items-center justify-center text-7xl font-bold">
+        {String(active + 1).padStart(2, "0")}
+      </div>
 
-      {/* ---------------- LEFT - COUNT (ONLY ACTIVE) ---------------- */}
-      <div className="col-span-2 sticky top-0 h-screen flex items-center">
-        <div className="h-24 flex items-center justify-center text-7xl font-bold">
-          {String(active + 1).padStart(2, "0")}
+      {/* MIDDLE - ICON */}
+      <div className="col-span-4 sticky top-0 h-screen flex items-center justify-center">
+        <div key={active} className="relative h-[400px] w-[400px]">
+          <Image
+            src={steps[active].icon}
+            alt="icon"
+            fill
+            className="object-contain"
+          />
         </div>
       </div>
 
-      {/* ---------------- MIDDLE - ICON (ONLY ACTIVE) ---------------- */}
-      <div className="col-span-4 sticky top-0 h-screen flex items-center">
-        <div className="h-24 flex items-center justify-center">
-          <div
-            key={active}
-            className="relative h-100 w-100"
-          >
-            <Image
-              src={steps[active].icon}
-              alt="icon"
-              // width={80}
-              // height={80}
-              fill
-              className="w-full object-contain"
-            />
-            
-          </div>
-        </div>
-      </div>
-
-      {/* ---------------- RIGHT - CONTENT (ANIMATED) ---------------- */}
+      {/* RIGHT - CONTENT */}
       <div className="col-span-6">
         {steps.map((step, i) => (
           <section
             key={i}
             ref={(el) => {
-              if (el) sectionsRef.current[i] = el;
+              sectionsRef.current[i] = el;
             }}
             className="min-h-screen flex items-center"
           >
-            {/* Animated content wrapper */}
             <div
               ref={(el) => {
-                if (el) contentRefs.current[i] = el;
+                contentRefs.current[i] = el;
               }}
-              className={`max-w-2xl transition-all ${
-                active === i ? "block" : "hidden"
-              }`}
+              className="max-w-2xl"
+              style={{
+                opacity: i === active ? 1 : 0,
+              }}
             >
-              <h2 className="text-6xl font-bold text-[#182138] mb-4"
+              <h2
+                className="text-6xl font-bold text-[#182138] mb-4"
                 style={{ fontFamily: "'Instrument Serif', serif" }}
               >
                 {step.title}
@@ -612,9 +475,6 @@ export default function Timeline() {
     </div>
   );
 }
-
-
-
 
 
 
