@@ -445,7 +445,7 @@ export default function Timeline() {
           <section
             key={i}
             ref={(el) => {
-              sectionsRef.current[i] = el;
+              sectionsRef.current[i] = el as HTMLDivElement | null;
             }}
             className="min-h-screen flex items-center"
           >
